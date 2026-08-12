@@ -19,6 +19,8 @@ services:
     image: docker.n8n.io/n8nio/n8n:latest
     container_name: n8n_application
     restart: always
+    ports:
+      - "5678:5678"
     environment:
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=${POSTGRES_HOST}
@@ -28,7 +30,7 @@ services:
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
       - N8N_HOST=${N8N_HOST}
       - N8N_PORT=${N8N_PORT}
-      - N8N_PROTOCOL=https
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-http}
       - WEBHOOK_URL=${WEBHOOK_URL}
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
       - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
