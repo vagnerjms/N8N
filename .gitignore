@@ -1,0 +1,8 @@
+# Ignorar arquivo contendo segredos e credenciais locais
+.env
+
+# Arquivos de log e diretórios temporários locais (se criados)
+*.log
+.caddy/
+data/
+config/
