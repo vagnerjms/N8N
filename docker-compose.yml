@@ -39,49 +39,9 @@ services:
       db:
         condition: service_healthy
 
-  caddy:
-    image: caddy:2-alpine
-    container_name: n8n_caddy_proxy
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    environment:
-      N8N_HOST: ${N8N_HOST}
-      SSL_EMAIL: ${SSL_EMAIL}
-      CADDYFILE_CONTENT: |
-        ${N8N_HOST} {
-            reverse_proxy n8n:5678 {
-                flush_interval -1
-            }
-            encode gzip zstd
-            log {
-                output file /var/log/caddy/access.log
-            }
-        }
-    entrypoint:
-      - sh
-      - -c
-      - |
-        echo "$$CADDYFILE_CONTENT" > /etc/caddy/Caddyfile
-        exec caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
-    volumes:
-      - caddy_data:/data
-      - caddy_config:/config
-      - caddy_logs:/var/log/caddy
-    depends_on:
-      - n8n
-
-
 volumes:
   postgres_storage:
     name: n8n_postgres_storage
   n8n_storage:
     name: n8n_storage_data
-  caddy_data:
-    name: n8n_caddy_data
-  caddy_config:
-    name: n8n_caddy_config
-  caddy_logs:
-    name: n8n_caddy_logs
+
